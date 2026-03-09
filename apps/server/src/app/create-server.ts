@@ -44,7 +44,7 @@ export class CreateServer {
       },
       router: this.trpcRouter.createRouter(),
       createContext: ({ req }) =>
-        this.trpcContext.createContext({ req: req as unknown as Request }),
+        this.trpcContext.createContext({ req }),
     });
 
     server.listen(this.config.PORT);

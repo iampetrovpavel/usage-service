@@ -5,9 +5,10 @@ import {
   type JetStreamClient,
   type JetStreamManager,
   StringCodec,
+  AckPolicy,
 } from "nats";
 import type { UsageService, ErrorService, RecordUsageParams, RecordErrorParams } from "@usage-service/common";
-import type { Config } from "@usage-service/common";
+import type { Config } from '../../app/config';
 
 const sc = StringCodec();
 
@@ -40,11 +41,20 @@ export class NatsConsumer {
 
     const js: JetStreamClient = nc.jetstream();
 
-    // Usage consumer
-    const usageConsumer = await js.consumers.get(streamName, {
+    // Ensure durable consumers exist
+    await jsm.consumers.add(streamName, {
       durable_name: "usage-processor",
       filter_subject: "usage.record",
-    } as any);
+      ack_policy: AckPolicy.Explicit,
+    });
+    await jsm.consumers.add(streamName, {
+      durable_name: "error-processor",
+      filter_subject: "error.record",
+      ack_policy: AckPolicy.Explicit,
+    });
+
+    // Usage consumer
+    const usageConsumer = await js.consumers.get(streamName, "usage-processor");
 
     (async () => {
       const messages = await usageConsumer.consume();
@@ -61,10 +71,7 @@ export class NatsConsumer {
     })();
 
     // Error consumer
-    const errorConsumer = await js.consumers.get(streamName, {
-      durable_name: "error-processor",
-      filter_subject: "error.record",
-    } as any);
+    const errorConsumer = await js.consumers.get(streamName, "error-processor");
 
     (async () => {
       const messages = await errorConsumer.consume();

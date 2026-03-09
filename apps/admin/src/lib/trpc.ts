@@ -8,13 +8,13 @@ export const trpc = createTRPCReact<AppRouter>();
 
 const store = getDefaultStore();
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3600";
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3400";
 
 export function createTRPCClient() {
   return trpc.createClient({
     links: [
       httpBatchLink({
-        url: `${API_URL}/trpc`,
+        url: API_URL,
         headers() {
           const token = store.get(adminTokenAtom);
           return token ? { Authorization: `Bearer ${token}` } : {};

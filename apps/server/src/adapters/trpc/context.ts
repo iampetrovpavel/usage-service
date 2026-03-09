@@ -1,7 +1,7 @@
 import { injectable, inject } from "tsyringe";
 import { initTRPC, TRPCError } from "@trpc/server";
 import jwt from "jsonwebtoken";
-import type { Config } from "@usage-service/common";
+import type { Config } from '../../app/config';
 
 export interface Context {
   token: string | null;
@@ -38,9 +38,10 @@ export class TRPCContext {
     });
   }
 
-  createContext(opts: { req: Request }): Context {
-    const authHeader = opts.req.headers.get("authorization");
-    const token = authHeader?.startsWith("Bearer ") ? authHeader.slice(7) : null;
+  createContext(opts: { req: { headers: Record<string, string | string[] | undefined> } }): Context {
+    const authHeader = opts.req.headers["authorization"];
+    const value = Array.isArray(authHeader) ? authHeader[0] : authHeader;
+    const token = value?.startsWith("Bearer ") ? value.slice(7) : null;
     return { token };
   }
 }

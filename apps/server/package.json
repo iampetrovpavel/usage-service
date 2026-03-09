@@ -5,13 +5,9 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
-    },
     "./adapters/trpc/router": {
-      "types": "./dist/adapters/trpc/router.d.ts",
-      "import": "./dist/adapters/trpc/router.js"
+      "types": "./src/adapters/trpc/router.ts",
+      "import": "./src/adapters/trpc/router.js"
     }
   },
   "scripts": {
