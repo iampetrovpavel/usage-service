@@ -1,0 +1,20 @@
+{
+  "name": "@usage-service/common",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "index.ts",
+  "types": "index.ts",
+  "exports": {
+    ".": { "types": "./index.ts", "default": "./index.ts" }
+  },
+  "dependencies": {
+    "@clickhouse/client": "^1.18.2",
+    "reflect-metadata": "^0.2.0",
+    "tsyringe": "^4.8.0",
+    "zod": "^3.24.0"
+  },
+  "devDependencies": {
+    "@types/node": "^25.3.5",
+    "typescript": "^5.7.0"
+  }
+}

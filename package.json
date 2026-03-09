@@ -1,0 +1,15 @@
+{
+  "name": "usage-service",
+  "private": true,
+  "workspaces": ["packages/*", "apps/*"],
+  "scripts": {
+    "build": "turbo build",
+    "dev": "turbo dev",
+    "typecheck": "turbo typecheck"
+  },
+  "packageManager": "pnpm@9.15.4",
+  "devDependencies": {
+    "turbo": "^2.5.0",
+    "typescript": "^5.7.0"
+  }
+}
