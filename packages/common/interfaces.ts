@@ -24,6 +24,8 @@ export interface PricingCache {
 export interface UsageRecord {
   session_id: string | null;
   user_id: string | null;
+  workspace_id: string | null;
+  organisation_id: string | null;
   model: string;
   operation: string;
   input_tokens: number;
@@ -42,6 +44,8 @@ export interface ErrorRecord {
   code: string | null;
   route: string | null;
   user_id: string | null;
+  workspace_id: string | null;
+  organisation_id: string | null;
   session_id: string | null;
   metadata: string;
 }
@@ -50,6 +54,8 @@ export interface ErrorRecord {
 export interface RecordUsageParams {
   sessionId?: string | null;
   userId?: string | null;
+  workspaceId?: string | null;
+  organisationId?: string | null;
   model: string;
   operation: string;
   inputTokens?: number;
@@ -67,6 +73,8 @@ export interface RecordErrorParams {
   code?: string | null;
   route?: string | null;
   userId?: string | null;
+  workspaceId?: string | null;
+  organisationId?: string | null;
   sessionId?: string | null;
   metadata?: string | null;
 }

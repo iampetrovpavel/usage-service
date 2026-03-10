@@ -99,6 +99,8 @@ export class UsageService {
       await this.storage.insertUsage({
         session_id: params.sessionId ?? null,
         user_id: params.userId ?? null,
+        workspace_id: params.workspaceId ?? null,
+        organisation_id: params.organisationId ?? null,
         model: params.model,
         operation: params.operation,
         input_tokens: params.inputTokens ?? 0,

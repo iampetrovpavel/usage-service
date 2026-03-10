@@ -8,7 +8,7 @@ import {
   adminErrorsInput,
 } from "@usage-service/common";
 import type { TRPCContext } from "../context";
-import type { Config } from "@usage-service/common";
+import type { Config } from "../../../app/config";
 import { NodeClickHouseClient } from '@clickhouse/client/dist/client';
 
 @injectable()
@@ -52,7 +52,8 @@ export class AdminRouter {
           });
         }
 
-        if (!config.ADMIN_EMAIL || email.toLowerCase() !== config.ADMIN_EMAIL.toLowerCase()) {
+        const adminEmails = (config.ADMIN_EMAIL ?? "").split(",").map(e => e.trim().toLowerCase()).filter(Boolean);
+        if (adminEmails.length === 0 || !adminEmails.includes(email.toLowerCase())) {
           throw new TRPCError({
             code: "UNAUTHORIZED",
             message: "This account is not authorized for admin access",
@@ -87,6 +88,8 @@ export class AdminRouter {
                 SELECT
                   ${sessionKey} as session_id,
                   any(user_id) as user_id,
+                  any(workspace_id) as workspace_id,
+                  any(organisation_id) as organisation_id,
                   sum(cost) as total_cost,
                   sum(input_tokens) as total_input_tokens,
                   sum(output_tokens) as total_output_tokens,
@@ -104,6 +107,8 @@ export class AdminRouter {
             interface SessionRow {
               session_id: string | null;
               user_id: string;
+              workspace_id: string | null;
+              organisation_id: string | null;
               total_cost: string;
               total_input_tokens: number;
               total_output_tokens: number;
@@ -116,6 +121,8 @@ export class AdminRouter {
             const rows = sessionRows.map((r) => ({
               sessionId: r.session_id,
               userId: r.user_id,
+              workspaceId: r.workspace_id,
+              organisationId: r.organisation_id,
               totalCost: r.total_cost,
               totalInputTokens: r.total_input_tokens,
               totalOutputTokens: r.total_output_tokens,
@@ -152,6 +159,8 @@ export class AdminRouter {
                   characters,
                   audio_duration_ms,
                   cost,
+                  workspace_id,
+                  organisation_id,
                   created_at
                 FROM ai_usage
                 WHERE ${condition}
@@ -169,6 +178,8 @@ export class AdminRouter {
               characters: number;
               audio_duration_ms: number;
               cost: string;
+              workspace_id: string | null;
+              organisation_id: string | null;
               created_at: string;
             }
 
@@ -183,6 +194,8 @@ export class AdminRouter {
               characters: r.characters,
               audioDurationMs: r.audio_duration_ms,
               cost: r.cost,
+              workspaceId: r.workspace_id,
+              organisationId: r.organisation_id,
               createdAt: r.created_at,
             }));
           } catch (error) {
@@ -233,6 +246,8 @@ export class AdminRouter {
                   code,
                   route,
                   user_id,
+                  workspace_id,
+                  organisation_id,
                   session_id,
                   metadata,
                   created_at
@@ -253,6 +268,8 @@ export class AdminRouter {
               code: string | null;
               route: string | null;
               user_id: string | null;
+              workspace_id: string | null;
+              organisation_id: string | null;
               session_id: string | null;
               metadata: string;
               created_at: string;
@@ -269,6 +286,8 @@ export class AdminRouter {
               code: r.code,
               route: r.route,
               userId: r.user_id,
+              workspaceId: r.workspace_id,
+              organisationId: r.organisation_id,
               sessionId: r.session_id,
               metadata: r.metadata,
               createdAt: r.created_at,

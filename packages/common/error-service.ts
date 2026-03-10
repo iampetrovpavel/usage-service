@@ -34,6 +34,8 @@ export class ErrorService {
         code: params.code ?? null,
         route: params.route ?? null,
         user_id: params.userId ?? null,
+        workspace_id: params.workspaceId ?? null,
+        organisation_id: params.organisationId ?? null,
         session_id: params.sessionId ?? null,
         metadata: params.metadata ?? "{}",
       });

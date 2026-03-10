@@ -4,7 +4,7 @@ import { initClickHouseTables } from "@usage-service/common";
 import type { TRPCContext } from "../adapters/trpc/context";
 import type { TRPCRouter } from "../adapters/trpc/router";
 import type { NatsConsumer } from "../adapters/nats/consumer";
-import type { Config } from "@usage-service/common";
+import type { Config } from "./config";
 import { NodeClickHouseClient } from '@clickhouse/client/dist/client';
 
 @injectable()

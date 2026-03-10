@@ -19,6 +19,8 @@ export async function initClickHouseTables(
         id              UUID DEFAULT generateUUIDv4(),
         session_id      Nullable(UUID),
         user_id         Nullable(UUID),
+        workspace_id    Nullable(String),
+        organisation_id Nullable(String),
         model           LowCardinality(String),
         operation       LowCardinality(String),
         input_tokens    UInt32 DEFAULT 0,
@@ -43,6 +45,8 @@ export async function initClickHouseTables(
         code        Nullable(String),
         route       Nullable(String),
         user_id     Nullable(UUID),
+        workspace_id    Nullable(String),
+        organisation_id Nullable(String),
         session_id  Nullable(UUID),
         metadata    String DEFAULT '{}',
         created_at  DateTime64(3) DEFAULT now64()
