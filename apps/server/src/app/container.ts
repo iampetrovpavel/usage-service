@@ -6,6 +6,7 @@ import { TRPCContext } from "../adapters/trpc/context";
 import { AdminRouter } from "../adapters/trpc/routers/admin";
 import { TRPCRouter } from "../adapters/trpc/router";
 import { NatsConsumer } from "../adapters/nats/consumer";
+import { NatsProducer } from "../adapters/nats/producer";
 import { CreateServer } from "./create-server";
 import { createClient } from '@clickhouse/client';
 import { config } from './config';
@@ -32,6 +33,7 @@ container.registerSingleton("TRPCContext", TRPCContext);
 container.registerSingleton("AdminRouter", AdminRouter);
 container.registerSingleton("TRPCRouter", TRPCRouter);
 container.registerSingleton("NatsConsumer", NatsConsumer);
+container.registerSingleton("NatsProducer", NatsProducer);
 container.registerSingleton("CreateServer", CreateServer);
 
 export { container };
